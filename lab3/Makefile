@@ -1,4 +1,4 @@
-CFLAGS= -Wall -Werror -Wno-error=unused-variable
+CXXFLAGS= -Wall -Werror -Wno-error=unused-variable
 
 all: send recv
 
@@ -6,15 +6,15 @@ link_emulator/lib.o:
 	$(MAKE) -C link_emulator
 
 send: send.o link_emulator/lib.o common.o
-	gcc $(CFLAGS) -g send.o link_emulator/lib.o common.o -o send
+	g++ $(CXXFLAGS) -g send.o link_emulator/lib.o common.o -o send
 
 recv: recv.o link_emulator/lib.o common.o
-	gcc $(CFLAGS) -g recv.o link_emulator/lib.o common.o -o recv
+	g++ $(CXXFLAGS) -g recv.o link_emulator/lib.o common.o -o recv
 
 common.o: common.c common.h
 
-.c.o:
-	gcc $(CFLAGS) -g -c $?
+.cpp.o:
+	g++ $(CXXFLAGS) -g -c $?
 
 clean:
 	$(MAKE) -C link_emulator clean

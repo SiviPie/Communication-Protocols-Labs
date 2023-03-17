@@ -4,7 +4,7 @@ SPEED=1
 DELAY=1
 LOSS=0
 # Adjust the corruption
-CORRUPT=0
+CORRUPT=30
 
 # Second bit corruption rate
 CORRUPT2=0
