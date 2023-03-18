@@ -3,10 +3,6 @@
 #include <stdbool.h>
 #include "link_emulator/lib.h"
 
-#define PAYLOAD_SIZE 1400
-
-#define O_BINARY 0
-
 uint8_t simple_csum(uint8_t *buf, size_t len);
 
 uint32_t crc32(uint8_t *buf, size_t len);
@@ -16,6 +12,8 @@ struct l3_msg_hdr {
 	uint16_t len;
 	uint32_t sum;
 };
+
+#define PAYLOAD_SIZE (1500 - sizeof(struct l3_msg_hdr))
 
 /* Layer 3 frame */
 struct l3_msg {
