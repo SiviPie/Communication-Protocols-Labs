@@ -3,7 +3,9 @@
 #include <stdbool.h>
 #include "link_emulator/lib.h"
 
-#define PAYLOAD_SIZE 25
+#define PAYLOAD_SIZE 1400
+
+#define O_BINARY 0
 
 uint8_t simple_csum(uint8_t *buf, size_t len);
 

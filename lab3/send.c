@@ -23,11 +23,11 @@ struct l3_msg send_data(struct l3_msg *t) {
 	struct l3_msg conf;
 	int len = link_recv(&conf, sizeof(struct l3_msg));
 	if (len < 0) {
-		perror("Receive message");
+		perror("Error receiving message\n");
 		exit(1);
 	}
 
-	printf("[SEND] Conf payload: %s\n", conf.payload);
+	// printf("[SEND] Conf payload: %s\n\n", conf.payload);
 
 	return conf;
 }
@@ -44,18 +44,18 @@ int is_ack(struct l3_msg conf) {
 
 
 int main(int argc, char **argv) {
-	printf("[SENDER] Starting.\n");
+	printf("[SENDER] Starting.\n\n");
 
 	init(HOST, PORT);
 
 	int inputFile = open("data.in", O_RDONLY);
 
 	if (inputFile == -1) {
-		perror("Failed to open file");
+		perror("Failed to open file!\n");
 		exit(1);
 	}
 
-	char buffer[PAYLOAD_SIZE];
+	unsigned char buffer[PAYLOAD_SIZE];
 	ssize_t bytesRead;
 
 	while ((bytesRead = read(inputFile, buffer, PAYLOAD_SIZE)) > 0) {
@@ -78,25 +78,26 @@ int main(int argc, char **argv) {
 		t.hdr.sum = htonl(crc32((void *)&t, sizeof(struct l3_msg)));
 
 		struct l3_msg conf;
-		int max_tries = 3;
+
+		int max_tries = 5;
+		int try = max_tries;
+
 		int ok = 0;
 		do{
-			printf("[SEND] Sending %d\\%d\n", (4 - max_tries), 3);
+			printf("[SEND] Sending %d\\%d\n", (max_tries+1 - try), max_tries);
 			conf = send_data(&t);
 			if(is_ack(conf)) {
 				ok = 1;
 				break;
 			}
-			max_tries--;
-		} while (max_tries);
+			try--;
+		} while (try);
 
 		if(!ok) {
-			perror("File corrupted, abort!\n");
+			perror("[SEND]File corrupted, abort!\n");
 			exit(1);
 		}
 	}
-
-	link_send("", 0);
 
 	/* TODO 3.1: Receive the confirmation */
 
