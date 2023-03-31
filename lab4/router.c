@@ -38,13 +38,19 @@ struct mac_entry *get_mac_entry(uint32_t given_ip)
 {
 	/* TODO 2.4: Iterate through the MAC table and search for an entry
 	 * that matches given_ip. */
-	// for (int i = 0; i < mac_table_len; i++) {
-	// 	if(mac_table[i] == given_ip)
-	// 		return mac_table;
-	// }
+	
 
 	/* We can iterate through the mac_table for (int i = 0; i <
 	 * mac_table_len; i++) */
+
+	for (int i = 0; i < mac_table_len; i++) {
+        if (mac_table[i].ip == given_ip) {
+            /* If the entry is found, return a pointer to it */
+            return &mac_table[i];
+        }
+    }
+	
+	/* If no entry was found, return NULL */
 	return NULL;
 }
 
